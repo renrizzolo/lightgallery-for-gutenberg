@@ -49,7 +49,7 @@ class Lgng_Init {
 			
 			// legacy shortcode implementation
 			add_shortcode( 'lg_gallery', array( $this, 'lgng_get_gallery' ) );
-			// add_filter( 'the_content', array( $this, 'lgng_replace_gallery' ) );
+			add_filter( 'the_content', array( $this, 'lgng_replace_gallery' ) );
 
 			// add_action('rest_api_init', function() {
 			// 	// Surface all Gutenberg blocks in the WordPress REST API
@@ -477,6 +477,7 @@ class Lgng_Init {
 				$classes = 'lgng-4-cols';
 					break;
 			}
+			
 			$images = json_decode($atts['images'], true);
 		 		$lghtml .=  '<div class="lightgallery lgng-row ' . $container . '" id="lgng-block-'. self::$blockId .'">';
 				foreach ( $images as $img ) {
@@ -612,6 +613,95 @@ class Lgng_Init {
 		return $lghtml;
 	}
 
+
+		/**
+	 * Return the gallery html.
+	 *
+	 * @param string $ids CSV string of image ids taken from gallery shortcode.
+	 **/
+	public function lgng_get_gallery_legacy( $match ) {
+			$lghtml = '';
+			self::$blockId ++;
+
+			$lghtml .= $this->lg_settings_script();
+
+			$match_ids = '/ids\s*=\s*"(.*?)"/';
+			$match_cols = '/columns\s*=\s*"(.*?)"/';
+		
+
+			preg_match($match_ids, $match, $ids);
+			preg_match($match_cols, $match, $cols);
+
+			$array_id = explode( ',', $ids[1] );
+			// if (!$array_id) return null;
+			$selector 		= $this->get_option('selector_class');
+			$container 		= $this->get_option('container_class');
+			$img 					= $this->get_option('img_class');
+			$item 				= $this->get_option('item_class');
+
+		//	$classes = 'lgng-3-cols';
+
+			// if ( count($array_id) % 3 === 0 ) {
+			// 	$classes = 'lgng-4-cols';
+			// }
+			$classes = 'lgng-4-cols';
+
+			if ( $cols ) {
+			switch ($cols) {				
+				case '6':
+				$classes = 'lgng-6-cols';
+					break;
+				case '5':
+				$classes = 'lgng-5-cols';
+					break;
+				case '4':
+				$classes = 'lgng-4-cols';
+					break;
+				case '3':
+				$classes = 'lgng-3-cols';
+					break;
+				case '2':
+				$classes = 'lgng-2-cols';
+					break;
+				default:
+				$classes = 'lgng-4-cols';
+					break;
+			}
+		}
+
+		 		$lghtml .=  '<div class="lightgallery lgng-row ' . $container . '" id="lgng-block-'. self::$blockId .'">';
+				foreach ( $array_id as $id ) {
+					// in case of empty id (from trailing comma in ids string)
+					if ( isset( $id ) && '' !== $id ) {
+						$thumb 	= wp_get_attachment_image_src( $id, 'thumbnail' )[0];
+						$full 	= wp_get_attachment_image_src( $id, 'large' )[0];
+
+						$caption = get_post( $id );
+						$caption_text = '';
+
+						if( !empty( $caption->post_excerpt ) ) {
+							$caption_text = $caption->post_excerpt;
+						}
+
+						if ( $this->get_option('display_in_lightslider') ) {
+							$lghtml .= '<figure class="ls-item ' . $item . '" data-thumb="' . $thumb . '">';
+		          $lghtml .= '<img alt="' . $caption_text . '" class="' . $img . '" src="' . $full . '" />';
+		        // 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
+		         	$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . $caption_text . '"  data-src="' . $full . '">';
+		         	$lghtml .= '</span>';
+		        	$lghtml .= '</figure>';
+		        } else {
+							$lghtml .= '<a data-sub-html="' . $caption_text . '" data-exthumbimage="' . $thumb . '" class="' . $selector . ' ' . $classes . '" href="' . $full . '">';
+							$lghtml .= '<img class="' . $img . '" src="' . $thumb . '">';
+							$lghtml .= "</a>";
+						}
+					}
+				}
+
+		 		$lghtml .=  '</div>';
+
+		return $lghtml;
+	}
 	/**
 	 * Filter that replaces Gallery shortcode with the newly generated Light Gallery html.
 	 *
@@ -624,11 +714,11 @@ class Lgng_Init {
 			// make sure that the gallery is on a page/single post.
 			if ( is_singular() ) {
 					// return content if there isn't a gallery present.
-				if ( ! has_shortcode( $post->post_content, 'lg_gallery' ) ) {
+				if ( ! has_shortcode( $post->post_content, 'gallery' ) ) {
 					return $content;
 				}
 
-				$gallery_pattern = '/\[lg_gallery(.*?)\]/';
+				$gallery_pattern = '/\[gallery(.*?)\]/';
 
 				// get all gallery shortcodes
 				preg_match_all( $gallery_pattern, $new_content, $gallery_matches );
@@ -636,12 +726,12 @@ class Lgng_Init {
 
 				//for each gallery atts
 				foreach($gallery_matches[0] as $matches) {
-					print_r($matches);
+					// print_r($matches);
 
 					$new_content = preg_replace_callback(
 						$gallery_pattern,
 						function ( &$matches ) {
-							return $this->lgng_get_gallery( $matches[1] );
+							return $this->lgng_get_gallery_legacy( $matches[1] );
 						},
 						$new_content
 					);
