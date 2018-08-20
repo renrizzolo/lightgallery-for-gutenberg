@@ -10,6 +10,7 @@ const { Component, Fragment } = wp.element;
 const { __ } = wp.i18n;
 const {
 	IconButton,
+	Button,
 	DropZone,
 	FormFileUpload,
 	PanelBody,
@@ -134,13 +135,13 @@ class GalleryEdit extends Component {
 
 	onSelectImages( images ) {
 		console.log('onsel', images);
-		const existingImages = JSON.parse(this.props.attributes.images);
+		// const existingImages = JSON.parse(this.props.attributes.images);
 		const newImages = [
-			...existingImages,
+			// ...existingImages,
 			...images.map( (image) => pick(image, ['alt', 'caption', 'id', 'link', 'url',]) )
 
 		];
-		console.log(existingImages, newImages);
+		console.log(newImages);
 		
 		this.props.setAttributes({
 			images: JSON.stringify(newImages)
@@ -339,13 +340,13 @@ class GalleryEdit extends Component {
 							label={__('Slider slide mode')}
 							value={ls_mode}
 							onChange={this.setLsMode}
-							options={lgModeOptions}
+							options={lsModeOptions}
 						/>
-												<SelectControl
+						<SelectControl
 							label={__('Gallery slide mode')}
 							value={lg_mode}
 							onChange={this.setLgMode}
-							options={lsModeOptions}
+							options={lgModeOptions}
 						/>
 
 						<TextareaControl
@@ -395,7 +396,19 @@ class GalleryEdit extends Component {
 									{ __( 'Upload an image' ) }
 								</FormFileUpload>
 							</div> */}
-							<MediaPlaceholder
+						<MediaUpload
+							onSelect={this.onSelectImages}
+							type="image"
+							multiple
+							gallery
+							value={parsedImages.map((img) => img.id)}
+							render={({ open }) => (
+								<div className="lg-blocks-edit-gallery">
+									<Button	onClick={open}>{__('Edit Gallery')}</Button>
+								</div>
+							)}
+						/>
+						{/* 	<MediaPlaceholder
 								icon="format-gallery"
 								className={className}
 								labels={{
@@ -408,7 +421,7 @@ class GalleryEdit extends Component {
 								multiple
 								notices={noticeUI}
 								onError={noticeOperations.createErrorNotice}
-							/>
+							/> */}
 						</div>
 					}
 				</div>
