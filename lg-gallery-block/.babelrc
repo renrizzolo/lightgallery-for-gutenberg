@@ -1,0 +1,17 @@
+{
+  "presets": [ "@wordpress/default" ],
+	"plugins": [
+       [
+         "@wordpress/babel-plugin-import-jsx-pragma", {
+            "scopeVariable": "createElement",
+            "source": "@wordpress/element",
+            "isDefault": false
+        } 
+      ],
+        [
+          "transform-react-jsx", {
+          "pragma": "wp.element.createElement"
+        } 
+      ],
+    ]
+}

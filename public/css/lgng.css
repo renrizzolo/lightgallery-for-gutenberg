@@ -1,0 +1,130 @@
+.ls-item.active > .lg-open {
+  opacity: 1;
+  -webkit-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+.lg-open {
+  cursor: pointer;
+  z-index: 999;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: #ffffff;
+  padding: 6px;
+  font-size: 24px;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  -webkit-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.lg-open:hover {
+
+  background: rgb(0,0,0);
+}
+.lightgallery .ls-item .ls-thumb-hide {
+  display: none;
+}
+.lightgallery {
+  width: 100%;
+  margin: 0;
+  float: left;
+  list-style: none outside none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+/* grid for thumbs */
+.lgng-row {  
+  float: left;
+  margin-left: -2.5px;
+  margin-right: -2.5px;
+}
+.lgng-2-cols, 
+.lgng-3-cols, 
+.lgng-4-cols, 
+.lgng-5-cols, 
+.lgng-6-cols, 
+.lgng-7-cols, 
+.lgng-8-cols, 
+.lgng-9-cols, 
+.lgng-10-cols, 
+.lgng-11-cols, 
+.lgng-12-cols {
+  position: relative;
+  min-height: 1px;
+  float: left;
+  padding-right: 2.5px;
+  padding-left: 2.5px;
+}
+
+.lgng-2-cols {
+  width: 50%;
+}
+.lgng-3-cols {
+  width: 33.33333333%;
+}
+.lgng-4-cols {   
+  width: 25%;
+}
+.lgng-5-cols {   
+  width: 20%;
+}
+.lgng-6-cols {   
+  width: 16.66666667%;
+}
+.lgng-7-cols {   
+  width: 14.2857%;
+}
+.lgng-8-cols {   
+  width: 12.5%;
+}
+.lgng-9-cols {   
+  width: 11.1111%;
+}
+.lgng-10-cols {   
+  width: 10%;
+}
+.lgng-11-cols {   
+  width: 9.0909%;
+}
+.lgng-12-cols {   
+  width: 8.333333%;
+}
+
+
+.lightgallery a {
+  margin-bottom: 5px;
+  box-sizing: border-box;
+}
+
+.lightgallery .ls-item {
+  height: 100%;
+  background: #333;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  margin: 0;
+  position: relative;
+  cursor:pointer;
+}
+
+.lightgallery .ls-item img {
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
+.lightgallery  img {
+  width: 100%;
+}
+.lSSlideOuter .lSPager.lSGallery img {
+  width: 100%;
+}
