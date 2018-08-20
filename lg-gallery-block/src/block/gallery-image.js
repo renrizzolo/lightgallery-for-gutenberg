@@ -85,8 +85,7 @@ class GalleryImage extends Component {
 	}
 
 	render() {
-		const { url, alt, id, link, isSelected, caption, onRemove, setAttributes, classes, } = this.props;
-
+		const { url, alt, id, link, isSelected, caption, onRemove, setAttributes, classes, } = this.props;		
 		// Disable reason: Image itself is not meant to be
 		// interactive, but should direct image selection and unfocus caption fields
 		// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
@@ -113,28 +112,35 @@ class GalleryImage extends Component {
 					</div>
 				}
 				{ img }
-				{( caption && caption.length > 0 ) && 
-					<figcaption>{caption}</figcaption>
-				}
-				{ isSelected ? (
-			<Modal
-				title="Edit caption"
-				onRequestClose={() => setState({ isSelected: false } ) }>
-				<div>
-						{img}
-				<RichText
-					tagName="figcaption"
-					placeholder={ __( 'Write caption…' ) }
-					value={ caption }
-					isSelected={ this.state.captionSelected }
-					onChange={ ( newCaption ) => setAttributes( { caption: newCaption } ) }
-					unstableOnFocus={ this.onSelectCaption }
+				{(caption && caption.length > 0) || isSelected ? (
+					<RichText 
+						value={caption} 
+						tagName="figcaption"
+						placeholder={__('Write caption…')}
+						isSelected={this.state.captionSelected}
+						onChange={(newCaption) => setAttributes({ caption: newCaption })}
+						unstableOnFocus={this.onSelectCaption}
 					inlineToolbar
-				/>
-				</div>
-			</Modal> 
-
-				) : null }
+					/>
+				)	:	null }
+			{	/* { this.state.isOpen ? (
+					<Modal
+						title="Edit caption"
+						onRequestClose={() => this.setState({isOpen: false})}>
+						<div style={{textAlign: "center"}}>
+							<img src={url} className="lg-blocks-modal-image"/>
+							<RichText
+								tagName="figcaption"
+								placeholder={ __( 'Write caption…' ) }
+								value={ caption }
+								isSelected={this.state.isOpen }
+								onChange={ ( newCaption ) => setAttributes( { caption: newCaption } ) }
+								// unstableOnFocus={ this.onSelectCaption }
+								inlineToolbar
+							/>
+						</div>
+					</Modal> 
+				) : null } */}
 			</figure>
 		);
 		/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/onclick-has-role, jsx-a11y/click-events-have-key-events */
