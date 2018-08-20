@@ -26,13 +26,11 @@
       flex-wrap: wrap; }
 
 .lg-blocks-gallery-item .is-selected {
-  outline: 4px solid #dadada;
-  outline-offset: -4px; }
+  outline: 2px solid #dadada;
+  outline-offset: -2px; }
   .lg-blocks-gallery-item .is-selected > img {
     width: 100%;
     height: auto; }
-  .lg-blocks-gallery-item .is-selected .editor-rich-text {
-    min-width: 300px; }
 
 .lg-blocks-gallery-item .editor-rich-text {
   overflow: visible;
@@ -50,6 +48,10 @@
   margin-top: -4px; }
   .lg-blocks-gallery-item .is-selected .editor-rich-text .editor-rich-text__tinymce {
     padding-top: 8px; }
+
+.lg-blocks-gallery-item .lg-blocks-edit-gallery {
+  padding: 1em;
+  background-color: #dadada; }
 
 .lg-blocks-gallery-item .components-button.core-blocks-gallery-add-item-button {
   display: -ms-flexbox;
