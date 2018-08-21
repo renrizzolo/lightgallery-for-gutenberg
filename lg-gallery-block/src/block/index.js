@@ -100,7 +100,7 @@ const settings = {
 	keywords: [ __( 'images' ), __( 'photos' ) ],
 	// attributes: blockAttributes,
 	supports: {
-		align: true,
+		align: ['center', 'wide', 'full' ],
 		anchor: true,
 	},
 
