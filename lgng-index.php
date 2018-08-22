@@ -10,7 +10,7 @@
  * Plugin Name: Light Gallery for Gutenberg
  * Plugin URI:
  * Description: A simple Light Gallery WordPress plugin for use in the gutenberg editor
- * Version: 2.0
+ * Version: 2.0.1
  * Author: Ren Rizzolo
  * Author URI: https://renrizzolo.github.com/
  * License: GPLv3 or later
