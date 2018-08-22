@@ -1,0 +1,25 @@
+{
+  "name": "lightgallery-for-gutenberg",
+  "version": "2.0.1",
+  "description": "Wordpress gallery plugin for gutenberg",
+  "main": "lgng-index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renrizzolo/lightgallery-for-gutenberg.git"
+  },
+  "keywords": [
+    "lightgallery",
+    "lightslider",
+    "wordpress",
+    "gutenberg"
+  ],
+  "author": "Ren Rizzolo",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/renrizzolo/lightgallery-for-gutenberg/issues"
+  },
+  "homepage": "https://github.com/renrizzolo/lightgallery-for-gutenberg#readme"
+}
