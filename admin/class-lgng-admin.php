@@ -35,7 +35,9 @@ class lgng_Admin {
 			'img_class'										=> '',
 			'ls_thumb_items'							=> 6,
 			'ls_mode'											=> 'slide',
-			'lg_mode'											=> 'slide',
+			'lg_mode'											=> 'lg-slide',
+			'image_size'									=> 'full',
+
 		);
 	}
 
@@ -168,7 +170,7 @@ class lgng_Admin {
 
 		add_settings_field(
 			'display_in_lightslider',
-			__( 'Display in slider', 'lgng' ),
+			__( 'Display in slider*', 'lgng' ),
 			array( $this, 'lgng_text_field_display_in_lightslider_render' ),
 			'pluginPage',
 			'lgng_ls_section'
@@ -176,7 +178,7 @@ class lgng_Admin {
 
 		add_settings_field(
 			'ls_thumb_items',
-			__( 'Lightslider # of thumbnails', 'lgng' ),
+			__( 'Lightslider # of thumbnails*', 'lgng' ),
 			array( $this, 'lgng_text_ls_thumb_items_render' ),
 			'pluginPage',
 			'lgng_ls_section'
@@ -184,15 +186,23 @@ class lgng_Admin {
 
 		add_settings_field(
 			'lg_mode',
-			__( 'Lightgallery slide mode', 'lgng' ),
+			__( 'Lightgallery slide mode*', 'lgng' ),
 			array( $this, 'lgng_select_lg_mode_render' ),
 			'pluginPage',
 			'lgng_lg_section'
 		);
 
 		add_settings_field(
+			'image_size',
+			__( 'image size', 'lgng' ),
+			array( $this, 'lgng_select_image_size_render' ),
+			'pluginPage',
+			'lgng_lg_section'
+		);
+
+		add_settings_field(
 			'ls_mode',
-			__( 'Lightslider slide mode', 'lgng' ),
+			__( 'Lightslider slide mode*', 'lgng' ),
 			array( $this, 'lgng_select_ls_mode_render' ),
 			'pluginPage',
 			'lgng_ls_section'
@@ -289,7 +299,17 @@ class lgng_Admin {
 	<?php 
 
 	}
-
+	public function lgng_select_image_size_render() {
+		$option = get_option( 'lgng_settings' );
+		$sizes = get_intermediate_image_sizes();
+		?>
+		<select id="lgng_settings[image_size]" name="lgng_settings[image_size]">
+		<option value="full" <?php selected( $option['image_size'], 'full'); ?>>full</option>
+		<?php foreach ( $sizes as $size ) { ?>
+			<option value="<?php echo $size ?>" <?php selected( $option['image_size'], $size); ?>><?php echo $size ?></option>
+		<?php	} ?>
+		</select>
+	<?php }
 	public function lgng_text_field_show_thumbnails_render() {
 		$option = get_option( 'lgng_settings' );
 		?>
@@ -335,7 +355,7 @@ class lgng_Admin {
 
 		<select id="lgng_settings[ls_mode]" name='lgng_settings[ls_mode]'/>
 			<option value="slide" <?php selected( $option['ls_mode'], 'slide' ); ?>>Slide</option>
-			<option value="fade" <?php selected( $option['ls_mode'], 'fade' ); ?>>Fade</option>
+			<option disabled value="fade" <?php selected( $option['ls_mode'], 'fade' ); ?>>Fade</option>
 		</select>
 		<?php
 
@@ -385,7 +405,7 @@ class lgng_Admin {
 
 
 	public function lgng_lg_section_callback() {
-		echo esc_html_e( 'Settings for lightgallery', 'lgng' );
+		echo esc_html_e( '* overridden by the gutenberg block settings, i.e gutenberg takes preference, but these settings can be used to shape how the block will be set by default when adding a new gallery', 'lgng' );
 
 	}
 
@@ -425,8 +445,21 @@ class lgng_Admin {
 			} else {
 			?>
 
-			<h3>Usage:</h3> 
-			<h4>Add a gallery via the WordPress add media button or via shortcode: [gallery ids=xxx,xxx,xxx]</h4>
+			<h2>Usage:</h2>
+			<h3>Gutenberg</h3>
+
+			<p>Add Lightgallery block in the gutenberg editor. Requires the gutenberg plugin to be active.</p>
+	<br/>
+	<br/>
+			<h3>Legacy implementation (shortcode)</h3>
+			<p>Add a gallery via the WordPress add media button, change shortcode to <code>lg_gallery</code>
+			</br>
+			or write shortcode directly: <code>[lg_gallery ids=xxx,xxx,xxx]</code>
+					</br>
+		</p>
+				
+			<h3>Legacy implementation (replaces native gallery)</h3>
+			<p>Add a gallery via the WordPress add media button or via shortcode: <code>[gallery ids=xxx,xxx,xxx]</code></p>
 		
 			<?php
 			}
