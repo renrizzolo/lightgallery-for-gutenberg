@@ -78,7 +78,8 @@ const lgModeOptions = [
 ];
 const lsModeOptions = [
 	{ value: 'slide', label: __( 'Slide' ) },
-	{ value: 'fade', label: __( 'Fade' ) },
+	// lightslider fade is a bit broken
+	{/* { value: 'fade', label: __( 'Fade' ) }, */}
 ];
 
 export function defaultColumnsNumber( attributes ) {
@@ -352,13 +353,13 @@ class GalleryEdit extends Component {
 						<TextareaControl
 							label={__('Lightslider additional options')}
 							value={ lightSliderOptions }
-							help="Enter comma separated key/value pairs sachinchoolur.github.io/lightslider/settings.html"
+							help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
 							onChange={ this.setLightSliderOptions }
 						/>
 						<TextareaControl
 							label={__('Lightgallery additional options')}
 							value={lightGalleryOptions}
-							help="Enter comma separated key/value pairs sachinchoolur.github.io/lightGallery/docs/api.html"
+							help="Enter comma separated key/value pairs (in quotes) sachinchoolur.github.io/lightGallery/docs/api.html"
 							onChange={this.setLightGalleryOptions}
 						/>
 					</PanelBody>
