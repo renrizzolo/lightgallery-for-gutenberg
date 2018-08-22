@@ -545,7 +545,7 @@ class Lgng_Init {
 					// in case of empty id (from trailing comma in ids string)
 					if ( isset( $id ) && '' !== $id ) {
 						$thumb 	= wp_get_attachment_image_src( $id, 'thumbnail' )[0];
-						$full 	= wp_get_attachment_image_src( $id, 'large' )[0];
+						$full	= wp_get_attachment_image_src( $img['id'], $this->get_option('image_size') )[0];
 
 						$caption = get_post( $id );
 						$caption_text = '';
@@ -638,7 +638,7 @@ class Lgng_Init {
 					// in case of empty id (from trailing comma in ids string)
 					if ( isset( $id ) && '' !== $id ) {
 						$thumb 	= wp_get_attachment_image_src( $id, 'thumbnail' )[0];
-						$full 	= wp_get_attachment_image_src( $id, 'large' )[0];
+						$full 	= wp_get_attachment_image_src( $id, $this->get_option('image_size') )[0];
 
 						$caption = get_post( $id );
 						$caption_text = '';
