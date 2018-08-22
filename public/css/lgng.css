@@ -128,3 +128,7 @@
 .lSSlideOuter .lSPager.lSGallery img {
   width: 100%;
 }
+.lSAction > a, .lSAction > a:hover, .entry-content .lSAction > a, .entry-content .lSAction > a:hover {
+  box-shadow: none;
+  text-decoration: none;
+}
