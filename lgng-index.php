@@ -47,7 +47,12 @@ class Lgng_Init {
 			add_action('init',  array( $this, 'register_block_action') );
 			
 			// legacy shortcode implementation
-			// this shortcode can (maybe) be converted to a block in gutenber
+
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_lg_scripts' ) );
+			}
+			// this shortcode can (maybe) be converted to a block in gutenberg
 			add_shortcode( 'lg_gallery', array( $this, 'lgng_get_gallery' ) );
 
 			// even more legacy native gallery replacement implementation
@@ -77,14 +82,12 @@ class Lgng_Init {
 		// Gutenberg is not active.
 		return;
 	}
-		$this->lg_gallery_block_cgb_block_assets();
+		$this->enqueue_lg_scripts();
 
 		$script_slug = 'lg_gallery_block-cgb-block-js';
 		$style_slug = 'lg_gallery_block-cgb-block-style-css';
 		$editor_style_slug = 'lg_gallery_block-cgb-block-editor-css';
 
-		// $this->lg_gallery_block_cgb_block_assets();
-		// $this->lg_gallery_block_cgb_editor_assets();
 		wp_register_script(
 			$script_slug, // Handle.
 			plugin_dir_url( __FILE__ ) . 'lg-gallery-block/dist/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
@@ -225,7 +228,7 @@ class Lgng_Init {
 	 *
 	 * @since 2.0.0
 	 */
-	public function lg_gallery_block_cgb_block_assets() {
+	public function enqueue_lg_scripts() {
 
 		$this->register_lg_scripts();
 		$this->register_lg_styles();
