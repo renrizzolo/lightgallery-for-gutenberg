@@ -35,21 +35,26 @@ define( 'PLUGIN_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 include PLUGIN_DIR . 'admin/class-lgng-admin.php';
 
 if ( ! class_exists('Lgng_Init') ) {
+
 class Lgng_Init {
+
 	static $blockId;
+
 	public function __construct() {
-		// if ( ! is_admin() ) {
+
+			self::$blockId = 0;
 
 			add_action('init',  array( $this, 'register_block_action') );
-			// add_action( 'wp_enqueue_scripts', array( $this, 'register_lg_scripts' ), 9 );
-			// add_action( 'wp_enqueue_scripts', array( $this, 'register_lg_styles' ), 9 );
-			// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_lg_scripts' ), 9 );
-
-			// add_action( 'wp_head', array( $this, 'lg_settings_script' ) );
 			
 			// legacy shortcode implementation
+			// this shortcode can (maybe) be converted to a block in gutenber
 			add_shortcode( 'lg_gallery', array( $this, 'lgng_get_gallery' ) );
+
+			// even more legacy native gallery replacement implementation
 			add_filter( 'the_content', array( $this, 'lgng_replace_gallery' ) );
+
+			//plugin settings link
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_settings_link' ) );
 
 			// add_action('rest_api_init', function() {
 			// 	// Surface all Gutenberg blocks in the WordPress REST API
@@ -64,19 +69,7 @@ class Lgng_Init {
 			// 		}
 			// 	}
 			// });
-				self::$blockId = 0;
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_settings_link' ) );
 
-				// Register the lg/gallery block on the server
-
-		// }
-
-
-		// // Hook: Editor assets.
-		// add_action( 'enqueue_block_editor_assets',  array( $this, 'lg_gallery_block_cgb_editor_assets' ) );
-
-		// // Hook: Frontend assets.
-		// add_action( 'enqueue_block_assets', array( $this,  'lg_gallery_block_cgb_block_assets' ) );
 	}
 
 	public function register_block_action() {
@@ -120,66 +113,61 @@ class Lgng_Init {
 		'show_in_rest' => true,
 		'type' => 'string',
 	) );
-	// if ( function_exists('register_block_type') ) {
-		register_block_type(
-			'lgng/gallery',  // Block name with namespace
-				array(
-					'style' => $style_slug, // General block style slug
-					'editor_style' => $editor_style_slug, // Editor block style slug
-					'editor_script' => $script_slug,  // The block script slug
-						'render_callback' => array( $this, 'lg_gallery_block_render_cb' ), // The render callback
-						'attributes' => array(
-						'ls_mode' => array(
-							'type' => 'string', 
-							'default' => $this->get_option('ls_mode')
-						),
-						'lg_mode' => array(
-							'type' => 'string', 
-							'default' => $this->get_option('lg_mode')
-						),
-						'images' => array(
-							'type' => 'string',
-							'default' => '[]',
-							// 'source' => 'query',
-							// 'selector' => 'div.wp-block-lgng-gallery .ls-item',
-						),
-						'columns' => array(
-							'type' => 'number',
-							'default' => $this->get_option('ls_thumb_items'),
-						),
-						'align' => array(
-							'type' => 'string',
-							'default' => 'center',
-						),
-						// 'imageCrop' => array(
-						// 	'type' => 'boolean',
-						// 	'default' => true,
-						// ),
-						'lightslider' => array(
-							'type' => 'boolean',
-							'default' =>  $this->get_option('display_in_lightslider'),
-						),
-						'lightgallery' => array(
-							'type' => 'boolean',
-							'default' =>  true,
-						),
-						// 'linkTo' => array(
-						// 	'type' => 'string',
-						// 	'default' => 'none',
-						// ),
-						'lightSliderOptions' => array(
-							'type' => 'string',
-							'default' => '',
 
-						),
-						'lightGalleryOptions' => array(
-							'type' => 'string',
-							'default' => '',
-						),
-					)
+	register_block_type(
+		'lgng/gallery',  // Block name with namespace
+			array(
+				'style' => $style_slug, // General block style slug
+				'editor_style' => $editor_style_slug, // Editor block style slug
+				'editor_script' => $script_slug,  // The block script slug
+				'render_callback' => array( $this, 'lg_gallery_block_render_cb' ), // The render callback
+				'attributes' => array(
+					'image_size' => array(
+						'type' => 'string', 
+						'default' => $this->get_option('image_size')
+					),
+					'ls_mode' => array(
+						'type' => 'string', 
+						'default' => $this->get_option('ls_mode')
+					),
+					'lg_mode' => array(
+						'type' => 'string', 
+						'default' => $this->get_option('lg_mode')
+					),
+					'images' => array(
+						'type' => 'string',
+						'default' => '[]',
+						// 'source' => 'query',
+						// 'selector' => 'div.wp-block-lgng-gallery .ls-item',
+					),
+					'columns' => array(
+						'type' => 'number',
+						'default' => $this->get_option('ls_thumb_items'),
+					),
+					'align' => array(
+						'type' => 'string',
+						'default' => 'center',
+					),
+					'lightslider' => array(
+						'type' => 'boolean',
+						'default' =>  $this->get_option('display_in_lightslider'),
+					),
+					'lightgallery' => array(
+						'type' => 'boolean',
+						'default' =>  true,
+					),
+					'lightSliderOptions' => array(
+						'type' => 'string',
+						'default' => '',
+
+					),
+					'lightGalleryOptions' => array(
+						'type' => 'string',
+						'default' => '',
+					),
 				)
-			);
-		// }
+			)
+		);
 	}
 	
 	/**
@@ -230,58 +218,30 @@ class Lgng_Init {
 	}
 
 	/**
-	 * Enqueue scripts.
-	 **/
-	public function enqueue_lg_scripts() {
-		if ( is_singular() && get_post_gallery() ) {
-
-			// wp_enqueue_style( 'lgng-css' );
-			// wp_enqueue_style( 'lightgallery-transitions-css' );
-			// wp_enqueue_style( 'lightgallery-css' );
-			// wp_enqueue_script( 'lightgallery' );
-			// wp_enqueue_script( 'lightgallery-thumbnail' );
-
-			// Enqueue the lightslider js if enabled.
-			// if ( $this->get_option( 'display_in_lightslider' ) ) {
-			// 	$this->add_ls_scripts();
-			// }
-		}
-	}
-
-	/**
 	 * 
 	 * Enqueue Gutenberg block assets for both frontend + backend.
 	 *
 	 * `wp-blocks`: includes block type registration and related functions.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	public function lg_gallery_block_cgb_block_assets() {
 
 		$this->register_lg_scripts();
 		$this->register_lg_styles();
 
-		// Styles.
-		// wp_register_style(
-		// 	'lg_gallery_block-cgb-style-css', // Handle.
-		// 	 plugin_dir_url( __FILE__ ) .  'lg-gallery-block/dist/blocks.style.build.css', // Block style CSS.
-		// 	array( 'wp-blocks' ) // Dependency to include the CSS after it.
-		// 	// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: filemtime — Gets file modification time.
-		// );
+		wp_enqueue_style( 'lgng-css' );
+		wp_enqueue_style( 'lightgallery-transitions-css' );
+		wp_enqueue_style( 'lightgallery-css' );
+		wp_enqueue_script( 'lightgallery' );
+		wp_enqueue_script( 'lightgallery-thumbnail' );
 
-			wp_enqueue_style( 'lgng-css' );
-			wp_enqueue_style( 'lightgallery-transitions-css' );
-			wp_enqueue_style( 'lightgallery-css' );
-			wp_enqueue_script( 'lightgallery' );
-			wp_enqueue_script( 'lightgallery-thumbnail' );
-
-			// Enqueue the lightslider js // if enabled. // can't detect anymore
-			// if ( $this->get_option( 'display_in_lightslider' ) ) {
-				$this->add_ls_scripts();
-			// }
-
-			// add_action( 'wp_head', array( $this, 'lg_settings_script' ) );
-
+		// Enqueue the lightslider js if enabled. 
+		// can't detect anymore as it's in the gutenberg render callback $atts
+		// if ( $this->get_option( 'display_in_lightslider' ) ) {
+			$this->add_ls_scripts();
+		// }
+		// add_action( 'wp_head', array( $this, 'lg_settings_script' ) );
 	}
 
 	/**
@@ -291,7 +251,7 @@ class Lgng_Init {
 	 * `wp-element`: includes the WordPress Element abstraction for describing the structure of your blocks.
 	 * `wp-i18n`: To internationalize the block's text.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 
 	public function lg_gallery_block_cgb_editor_assets() {
@@ -362,85 +322,59 @@ class Lgng_Init {
 	}
 
 
-	  /**
-     * Block render callback
-     * 
-     * Render callback for the dynamic block.
-     * 
-     * Instead of rendering from the block's save(), this callback will render the front-end
-     *
-     * @since 2.0.0
-     * @param $att Attributes from the JS block
-     * @return string Rendered HTML
-     */
-    public function lg_gallery_block_render_cb ( $atts ) {
-			//  print_r($atts);
-			// return null;
-			self::$blockId ++;
+	/**
+	 * Block render callback
+	 * 
+	 * Render callback for the dynamic block.
+	 * 
+	 * Instead of rendering from the block's save(), this callback will render the front-end
+	 *
+	 * @since 2.0.0
+	 * @param $att Attributes from the JS block
+	 * @return string Rendered HTML
+	 */
+	public function lg_gallery_block_render_cb ( $atts ) {
 
-			$selector 		= $this->get_option('selector_class');
-			$container 		= $this->get_option('container_class');
-			$img_class 		= $this->get_option('img_class');
-			$item 				= $this->get_option('item_class');
-			$lghtml = '';
-		//	$classes = 'lgng-3-cols';
+		self::$blockId ++;
 
-			// if ( count($array_id) % 3 === 0 ) {
-			// 	$classes = 'lgng-4-cols';
-			// }
+		$selector 		= $this->get_option('selector_class');
+		$container 		= $this->get_option('container_class');
+		$img_class 		= $this->get_option('img_class');
+		$item 				= $this->get_option('item_class');
+		$lghtml = '';
 
-			$lghtml .= '<script>';
-			$lghtml .= 'jQuery(document).ready(function($){';
+
+		$lghtml .= '<script>';
+		$lghtml .= 'jQuery(document).ready(function($){';
 
 		if ( $atts['lightslider'] ) {
-			
-			$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightSlider({';
-				$lghtml .= '"addClass": "align' . $atts['align'] . '",';
-			$lghtml .= '"item": 1,';
-			$lghtml .= '"loop": true,';
-			$lghtml .= '"slideMargin": 0,';
-			$lghtml .= '"mode": "' . $atts['ls_mode'] . '",';
-			$lghtml .= '"thumbItem":' . $atts['columns'] . ',';
-			if  ( $atts['columns'] == 0 ) {
-				$lghtml .= '"gallery": false,';
-				$lghtml .= '"pager": false,';
-			} else {
-				$lghtml .= '"gallery": true,';
-			}
-			$lghtml .= esc_js( $atts['lightSliderOptions'] );
-			$lghtml .= '});';
-				if ($atts['lightgallery']) {
-						$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightGallery({';
-						if ( $this->get_option( 'show_thumbnails' ) !== 0 ) {
-							$lghtml .= '"thumbnail": true,';
-						} else {
-							$lghtml .= '"thumbnail": false,';
-						}
-						$lghtml .= '"selector": ".lg-open",';
-						if ( $this->get_option( 'show_download' ) ) { 
-							$lghtml .= '"download": true,';
-
-						} else {
-							$lghtml .= '"download": false,';
-						}
-						$lghtml .= '"showAfterLoad": true,';
-						$lghtml .= '"hideBarsDelay": 2000,';
-						$lghtml .= '"subHtmlSelectorRelative": true,';
-						$lghtml .= '"exThumbImage": "data-exthumbimage",';
-						$lghtml .= '"mode": "' . $atts['lg_mode'] . '",';
-						$lghtml .= esc_js( $atts['lightGalleryOptions'] );
-						$lghtml .= '});';
-					}
-				} else {
+		// lol this was annoying to write
+		$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightSlider({';
+		$lghtml .= '"addClass": "align' . $atts['align'] . '",';
+		$lghtml .= '"item": 1,';
+		$lghtml .= '"loop": true,';
+		$lghtml .= '"slideMargin": 0,';
+		$lghtml .= '"mode": "' . $atts['ls_mode'] . '",';
+		$lghtml .= '"thumbItem":' . $atts['columns'] . ',';
+		if  ( $atts['columns'] == 0 ) {
+			$lghtml .= '"gallery": false,';
+			$lghtml .= '"pager": false,';
+		} else {
+			$lghtml .= '"gallery": true,';
+		}
+		$lghtml .= $atts['lightSliderOptions'];
+		$lghtml .= '});';
+			if ($atts['lightgallery']) {
 					$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightGallery({';
 					if ( $this->get_option( 'show_thumbnails' ) !== 0 ) {
 						$lghtml .= '"thumbnail": true,';
- 					} else {
+					} else {
 						$lghtml .= '"thumbnail": false,';
 					}
-						$lghtml .= '"selector": ".'. esc_js( $this->get_option( 'selector_class' ) ) . '",';
-					if ( $this->get_option( 'show_download' ) ) {
+					$lghtml .= '"selector": ".lg-open",';
+					if ( $this->get_option( 'show_download' ) ) { 
 						$lghtml .= '"download": true,';
+
 					} else {
 						$lghtml .= '"download": false,';
 					}
@@ -449,76 +383,103 @@ class Lgng_Init {
 					$lghtml .= '"subHtmlSelectorRelative": true,';
 					$lghtml .= '"exThumbImage": "data-exthumbimage",';
 					$lghtml .= '"mode": "' . $atts['lg_mode'] . '",';
-					$lghtml .=  esc_js( $atts['lightGalleryOptions'] );
+					$lghtml .= $atts['lightGalleryOptions'];
 					$lghtml .= '});';
-			}
-			$lghtml .= '});';
-				$lghtml .= '</script>';
-	add_action('wp_head', function() {
-		return $lghtml;
-	});
-			switch ($atts['columns']) {				
-				case '6':
-				$classes = 'lgng-6-cols';
-					break;
-				case '5':
-				$classes = 'lgng-5-cols';
-					break;
-				case '4':
-				$classes = 'lgng-4-cols';
-					break;
-				case '3':
-				$classes = 'lgng-3-cols';
-					break;
-				case '2':
-				$classes = 'lgng-2-cols';
-					break;
-				default:
-				$classes = 'lgng-4-cols';
-					break;
-			}
-			
-			$images = json_decode($atts['images'], true);
-		 		$lghtml .=  '<div class="lightgallery lgng-row ' . $container . '" id="lgng-block-'. self::$blockId .'">';
-				foreach ( $images as $img ) {
+				}
+			} else {
+				$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightGallery({';
+				if ( $this->get_option( 'show_thumbnails' ) !== 0 ) {
+					$lghtml .= '"thumbnail": true,';
+				} else {
+					$lghtml .= '"thumbnail": false,';
+				}
+					$lghtml .= '"selector": ".'. esc_js( $this->get_option( 'selector_class' ) ) . '",';
+				if ( $this->get_option( 'show_download' ) ) {
+					$lghtml .= '"download": true,';
+				} else {
+					$lghtml .= '"download": false,';
+				}
+				$lghtml .= '"showAfterLoad": true,';
+				$lghtml .= '"hideBarsDelay": 2000,';
+				$lghtml .= '"subHtmlSelectorRelative": true,';
+				$lghtml .= '"exThumbImage": "data-exthumbimage",';
+				$lghtml .= '"mode": "' . $atts['lg_mode'] . '",';
+				$lghtml .=  $atts['lightGalleryOptions'];
+				$lghtml .= '});';
+		}
+		$lghtml .= '});';
+		$lghtml .= '</script>';
 
-					if ( isset( $img['id'] ) && '' !== $img['id'] ) {
 
-						$thumb 	= wp_get_attachment_image_src( $img['id'], 'thumbnail' )[0];
-						$full 	= wp_get_attachment_image_src( $img['id'], 'large' )[0];
 
-						$caption = get_post( $img['id'] );
-						$caption_text = '';
+		switch ($atts['columns']) {				
+			case '6':
+			$classes = 'lgng-6-cols';
+				break;
+			case '5':
+			$classes = 'lgng-5-cols';
+				break;
+			case '4':
+			$classes = 'lgng-4-cols';
+				break;
+			case '3':
+			$classes = 'lgng-3-cols';
+				break;
+			case '2':
+			$classes = 'lgng-2-cols';
+				break;
+			default:
+			$classes = 'lgng-4-cols';
+				break;
+		}
+		
+		$images = json_decode($atts['images'], true);
+			$lghtml .=  '<div class="lightgallery lgng-row ' . $container . '" id="lgng-block-'. self::$blockId .'">';
+			foreach ( $images as $img ) {
 
-						if( !empty( $caption->post_excerpt ) ) {
-							$caption_text = $caption->post_excerpt;
-						}
+				if ( isset( $img['id'] ) && '' !== $img['id'] ) {
 
-						if ( $atts['lightslider'] ) {
-							$lghtml .= '<figure class="ls-item ' . $item . '" data-thumb="' . $thumb . '">';
-		          $lghtml .= '<img alt="' . $caption_text . '" class="' . $img_class . '" src="' . $full . '" />';
-		        // 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
-		        if ( $atts['lightgallery'] ) {
-							$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . $caption_text . '"  data-src="' . $full . '">';
-							$lghtml .= '</span>';
-						}
-							$lghtml .= '</figure>';
-							
-		        } else {
-							$lghtml .= '<a data-sub-html="' . $caption_text . '" data-exthumbimage="' . $thumb . '" class="' . $selector . ' ' . $classes . '" href="' . $full . '">';
-							$lghtml .= '<img class="' . $img_class . ' lg-thumb" src="' . $thumb . '">';
-							$lghtml .= "</a>";
-						}
+					$thumb 	= wp_get_attachment_image_src( $img['id'], 'thumbnail' )[0];
+
+					$full	= wp_get_attachment_image_src( $img['id'], $atts['image_size'] )[0];
+
+					// deprecated: get caption from attachment
+					// $caption = get_post( $img['id'] );
+
+					// if( !empty( $caption->post_excerpt ) ) {
+					// 	$caption_text = $caption->post_excerpt;
+					// }
+
+					// how to parse this when it's from <RichText/>? 
+					// oh, use format="string" prop
+					$caption_html = $img['caption'];
+
+
+					if ( $atts['lightslider'] ) {
+						$lghtml .= '<figure class="ls-item ' . $item . '" data-thumb="' . $thumb . '">';
+						$lghtml .= '<img alt="' . $caption_text . '" class="' . $img_class . '" src="' . $full . '" />';
+					// 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
+					if ( $atts['lightgallery'] ) {
+						$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . htmlspecialchars($caption_html) . '"  data-src="' . $full . '">';
+						$lghtml .= '</span>';
+					}
+						$lghtml .= '</figure>';
+						
+					} else {
+						$lghtml .= '<a data-sub-html="' . htmlspecialchars($caption_html) . '" data-exthumbimage="' . $thumb . '" class="' . $selector . ' ' . $classes . '" href="' . $full . '">';
+						$lghtml .= '<img class="' . $img_class . ' lg-thumb" src="' . $thumb . '">';
+						$lghtml .= "</a>";
 					}
 				}
+			}
 
-		 		$lghtml .=  '</div>';
+			$lghtml .=  '</div>';
 
 		return $lghtml;
 	}
-		
+	
 	/**
-	 * Return the gallery html.
+	 * Return the gallery for the lg_gallery shortcode.
 	 *
 	 * @param string $ids CSV string of image ids taken from gallery shortcode.
 	 **/
@@ -615,7 +576,7 @@ class Lgng_Init {
 
 
 		/**
-	 * Return the gallery html.
+	 * Return the gallery html for the native gallery shortcode replacement.
 	 *
 	 * @param string $ids CSV string of image ids taken from gallery shortcode.
 	 **/
@@ -762,4 +723,5 @@ class Lgng_Init {
 }
 
 new Lgng_Init();
+
 }
