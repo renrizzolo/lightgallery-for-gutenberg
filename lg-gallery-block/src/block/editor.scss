@@ -2,17 +2,20 @@
 	margin: 0;
 }
 
-// Allow gallery items to go edge to edge.
-.gutenberg .wp-block-lgng-gallery:not(.components-placeholder) {
-	margin-left: -8px;
-	margin-right: -8px;
-}
 
-// Don't use negative margins when full-wide.
-.gutenberg [data-align="full"] .wp-block-lgng-gallery:not(.components-placeholder) {
-	margin-left: auto;
-	margin-right: auto;
-}
+// Allow gallery items to go edge to edge.
+// conflicts with some themes' full/wide align method
+// .gutenberg .wp-block-lgng-gallery:not(.components-placeholder) {
+// 	margin-left: -8px;
+// 	margin-right: -8px;
+// }
+
+// // Don't use negative margins when full-wide.
+// .gutenberg [data-align="full"] .wp-block-lgng-gallery:not(.components-placeholder) {
+// 	margin-left: auto;
+// 	margin-right: auto;
+// }
+
 .wp-block-lgng-gallery figure {
 	margin: 0 0 38px 0;
 	outline: none;
@@ -70,9 +73,9 @@
 			// top: -52px;
 		}
 
-		// Make extra space for the inline toolbar.
+		// give caption some space
 		.editor-rich-text__tinymce {
-			padding-top: 8px;
+			padding: 4px;
 		}
 	}
 
@@ -115,6 +118,9 @@
 	z-index: z-index(".core-blocks-gallery-item__inline-menu");
 
 	.components-button {
+		width: 26px;
+    height: 26px;
+    justify-content: center;
 		color: white;
 		background: rgba(0, 0, 0, 0.45);
 		&:hover,
