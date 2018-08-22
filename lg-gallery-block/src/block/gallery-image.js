@@ -113,7 +113,8 @@ class GalleryImage extends Component {
 				}
 				{ img }
 				{(caption && caption.length > 0) || isSelected ? (
-					<RichText 
+					<RichText
+						format="string" 
 						value={caption} 
 						tagName="figcaption"
 						placeholder={__('Write caption…')}
