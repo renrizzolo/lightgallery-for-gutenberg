@@ -139,7 +139,14 @@ class GalleryEdit extends Component {
 		// const existingImages = JSON.parse(this.props.attributes.images);
 		const newImages = [
 			// ...existingImages,
-			...images.map( (image) => pick(image, ['alt', 'caption', 'id', 'link', 'url',]) )
+			...images.map( (image) => {
+
+					if (Array.isArray(image.caption)) {
+						console.log('isarr', image.caption)
+						image.caption = image.caption[0]
+					}
+					return pick(image, ['alt', 'caption', 'id', 'link', 'url',]);
+			})
 
 		];
 		console.log(newImages);

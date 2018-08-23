@@ -455,12 +455,12 @@ class Lgng_Init {
 
 					// how to parse this when it's from <RichText/>? 
 					// oh, use format="string" prop
-					$caption_html = $img['caption'];
-
-
+					$caption_html =  isset( $img['caption'] ) ? $img['caption'] : '';
+						// echo $caption_html[0];
+						
 					if ( $atts['lightslider'] ) {
 						$lghtml .= '<figure class="ls-item ' . $item . '" data-thumb="' . $thumb . '">';
-						$lghtml .= '<img alt="' . $caption_text . '" class="' . $img_class . '" src="' . $full . '" />';
+						$lghtml .= '<img alt="' . htmlspecialchars($caption_html) . '" class="' . $img_class . '" src="' . $full . '" />';
 					// 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
 					if ( $atts['lightgallery'] ) {
 						$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . htmlspecialchars($caption_html) . '"  data-src="' . $full . '">';
