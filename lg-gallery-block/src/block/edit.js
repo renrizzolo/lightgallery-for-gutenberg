@@ -6,6 +6,28 @@ import { filter, pick } from 'lodash';
 /**
  * WordPress dependencies
  */
+// import {
+// 	IconButton,
+// 	Button,
+// 	DropZone,
+// 	FormFileUpload,
+// 	PanelBody,
+// 	RangeControl,
+// 	SelectControl,
+// 	ToggleControl,
+// 	TextareaControl,
+// 	Toolbar,
+// 	withNotices, } from '@wordpress/components';
+// import { Component, Fragment  } from '@wordpress/element';
+// import { __ } from '@wordpress/i18n';
+// import {
+// 	BlockControls,
+// 	MediaUpload,
+// 	MediaPlaceholder,
+// 	InspectorControls,
+// 	mediaUpload,
+// } from '@wordpress/editor';
+
 const { Component, Fragment } = wp.element;
 const { __ } = wp.i18n;
 const {
@@ -206,7 +228,7 @@ class GalleryEdit extends Component {
 
 	setImageAttributes( index, attributes ) {
 		const { attributes: { images }, setAttributes } = this.props;
-		const parsedImages = JSON.parse(images);
+		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
 		if ( ! parsedImages[ index ] ){
 			return;
 		}
@@ -271,7 +293,7 @@ class GalleryEdit extends Component {
 				onFilesDrop={ this.addFiles }
 			/>
 		);
-		const parsedImages = JSON.parse(images);
+		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
 		const controls = (
 			<BlockControls>
 				{ !! parsedImages.length && (
