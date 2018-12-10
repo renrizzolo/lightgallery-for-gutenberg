@@ -91,7 +91,7 @@ class Lgng_Init {
 		wp_register_script(
 			$script_slug, // Handle.
 			plugin_dir_url( __FILE__ ) . 'lg-gallery-block/dist/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
-			array(  'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
+			array(  'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ) // Dependencies, defined above.
 			// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 			// true // Enqueue the script in the footer.
 		);
@@ -262,7 +262,7 @@ class Lgng_Init {
 		wp_register_script(
 			'lg_gallery_block-cgb-block-js', // Handle.
 			 plugin_dir_url( __FILE__ ) . 'lg-gallery-block/dist/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
-			array('lodash', 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
+			array('lodash', 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
 			// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 			true // Enqueue the script in the footer.
 		);
