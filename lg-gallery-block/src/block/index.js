@@ -8,7 +8,7 @@ import { filter, every } from 'lodash';
  */
 const { __ } = wp.i18n;
 const { createBlock } = wp.blocks;
-const { RichText, mediaUpload } = wp.editor;
+const { mediaUpload } = wp.editor;
 const { createBlobURL } = wp.blob;
 const { registerBlockType } = wp.blocks;
 
@@ -129,6 +129,27 @@ const settings = {
 				},
 			},
 			{
+				type: 'block',
+				blocks: ['core/gallery'],
+				transform: ({ images }) => {
+					const validImages = filter(images, ({ id, url }) => id && url);
+					if (validImages.length > 0) {
+						console.log(validImages, 'images to transform from gallery to lgng block')
+
+						return createBlock('lgng/gallery', {
+							images: JSON.stringify(validImages.map(({ id, url, alt, caption }) => ({ id, url, alt, caption }))),
+							columns: validImages.length,
+							ls_mode: 'lg-slide',
+							lg_mode: 'Slide',
+							align: 'center',
+							lightslider: true,
+							lightgallery: true,
+						});
+					}
+					return createBlock('lgng/gallery');
+				},
+			},
+			{
 				type: 'shortcode',
 				tag: 'lg_gallery',
 				attributes: {
@@ -183,11 +204,27 @@ const settings = {
 				blocks: [ 'core/image' ],
 				transform: ( { images } ) => {
 					const toTransform = JSON.parse(images);
-					if (toTransform.length > 0 ) {
-						console.log(toTransform, 'images to transform to image block')
-						return toTransform.map( ( { id, url, alt, caption } ) => createBlock( 'core/image', { id, url, alt, caption } ) );
+					const validImages = filter(toTransform, ({ id, url }) => id && url);
+
+					if (validImages.length > 0 ) {
+						console.log(validImages, 'images to transform to image block')
+						return validImages.map( ( { id, url, alt, caption } ) => createBlock( 'core/image', { id, url, alt, caption } ) );
 					}
 					return createBlock( 'core/image' );
+				},
+			},
+			{
+				type: 'block',
+				blocks: [ 'core/gallery' ],
+				transform: ( { images } ) => {
+					const toTransform = typeof images === 'string' ? JSON.parse(images) : images;
+					const validImages = filter(toTransform, ({ id, url }) => id && url);
+
+					if (validImages.length > 0) {
+						console.log(validImages, 'images to transform to gallery block')
+						return createBlock('core/gallery', {images: validImages});
+					}
+					return createBlock('core/gallery');
 				},
 			},
 		],
