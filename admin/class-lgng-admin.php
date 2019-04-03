@@ -37,7 +37,8 @@ class lgng_Admin {
 			'ls_mode'											=> 'slide',
 			'lg_mode'											=> 'lg-slide',
 			'image_size'									=> 'full',
-
+			'lightslider_extra_options'		=> '',
+			'lightgallery_extra_options'	=> '',
 		);
 	}
 
@@ -175,7 +176,13 @@ class lgng_Admin {
 			'pluginPage',
 			'lgng_ls_section'
 		);
-
+		add_settings_field(
+			'lightslider_extra_options',
+			__( 'extra options object to apply as default to lightslider', 'lgng' ),
+			array( $this, 'lgng_text_field_lightslider_extra_options_render' ),
+			'pluginPage',
+			'lgng_ls_section'
+		);
 		add_settings_field(
 			'ls_thumb_items',
 			__( 'Lightslider # of thumbnails*', 'lgng' ),
@@ -220,6 +227,13 @@ class lgng_Admin {
 			'show_download',
 			__( 'enable download image button in lightgallery', 'lgng' ),
 			array( $this, 'lgng_text_field_show_download_render' ),
+			'pluginPage',
+			'lgng_lg_section'
+		);
+		add_settings_field(
+			'lightgallery_extra_options',
+			__( 'extra options object to apply as default to lightgallery', 'lgng' ),
+			array( $this, 'lgng_text_field_lightgallery_extra_options_render' ),
 			'pluginPage',
 			'lgng_lg_section'
 		);
@@ -325,6 +339,16 @@ class lgng_Admin {
 		<?php
 
 	}
+		public function lgng_text_field_lightgallery_extra_options_render() {
+		$option = $this->get_option( 'lightgallery_extra_options' );
+		?>
+	
+		<textarea class="code widefat" name='lgng_settings[lightgallery_extra_options]'>
+			<?php echo esc_html( $option ); ?>
+		</textarea>
+		<?php
+
+	}
 
 
 // lightslider section
@@ -333,7 +357,7 @@ class lgng_Admin {
 		$option = get_option( 'lgng_settings' );
 		?>
 		<input type='checkbox' id="lgng_settings[display_in_lightslider]" name='lgng_settings[display_in_lightslider]' value="1" <?php checked( '1', $option['display_in_lightslider'] ); ?> /> 
-		Whether to display the thumbnails in a grid or show a slider with optional thumbnails under it.
+		Check this box to display the images in a slider, with optional thumbnails below. Uncheck to show thumbnails that open to a full-screen gallery.
 		<?php
 
 	}
@@ -357,6 +381,16 @@ class lgng_Admin {
 			<option value="slide" <?php selected( $option['ls_mode'], 'slide' ); ?>>Slide</option>
 			<option disabled value="fade" <?php selected( $option['ls_mode'], 'fade' ); ?>>Fade</option>
 		</select>
+		<?php
+
+	}
+		public function lgng_text_field_lightslider_extra_options_render() {
+		$option = $this->get_option( 'lightslider_extra_options' );
+		?>
+	
+		<textarea class="code widefat" name='lgng_settings[lightslider_extra_options]'>
+			<?php echo esc_html( $option ); ?>
+		</textarea>
 		<?php
 
 	}
