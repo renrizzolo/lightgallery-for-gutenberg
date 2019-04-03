@@ -161,12 +161,12 @@ class Lgng_Init {
 					),
 					'lightSliderOptions' => array(
 						'type' => 'string',
-						'default' => '',
-
+						'default' =>  $this->get_option('lightslider_extra_options'),
 					),
 					'lightGalleryOptions' => array(
 						'type' => 'string',
-						'default' => '',
+						'default' =>  $this->get_option('lightgallery_extra_options'),
+
 					),
 				)
 			)
@@ -374,7 +374,7 @@ class Lgng_Init {
 					} else {
 						$lghtml .= '"thumbnail": false,';
 					}
-					$lghtml .= '"selector": ".lg-open",';
+					$lghtml .= '"selector": ".ls-item:not(.clone) .lg-open",';
 					if ( $this->get_option( 'show_download' ) ) { 
 						$lghtml .= '"download": true,';
 
@@ -461,11 +461,11 @@ class Lgng_Init {
 					if ( $atts['lightslider'] ) {
 						$lghtml .= '<figure class="ls-item ' . $item . '" data-thumb="' . $thumb . '">';
 						$lghtml .= '<img alt="' . htmlspecialchars($caption_html) . '" class="' . $img_class . '" src="' . $full . '" />';
-					// 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
-					if ( $atts['lightgallery'] ) {
-						$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . htmlspecialchars($caption_html) . '"  data-src="' . $full . '">';
-						$lghtml .= '</span>';
-					}
+						// 	$lghtml .= 	'<div class="lg-caption">Caption here</div>';
+						if ( $atts['lightgallery'] ) {
+							$lghtml .= '<span class="' . $selector . ' lg-open lg-fullscreen lg-icon" data-exthumbimage="' . $thumb . '" data-sub-html="' . htmlspecialchars($caption_html) . '"  data-src="' . $full . '">';
+							$lghtml .= '</span>';
+						}
 						$lghtml .= '</figure>';
 						
 					} else {
