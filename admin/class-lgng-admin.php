@@ -18,8 +18,10 @@ class lgng_Admin {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'lgng_add_admin_menu' ) );
 			add_action( 'admin_init', array( $this, 'lgng_settings_init' ) );
+
 		}
 	}
+
 
 	/**
 	 * Returns the array of default options.
@@ -104,12 +106,15 @@ class lgng_Admin {
 
 		// Loop through each of the incoming options.
 		foreach ( $options as $key => $value ) {
-
 			// Check to see if the current option has a value. If so, process it.
 			if ( isset( $options[ $key ] ) ) {
-
-				// Strip all HTML and PHP tags and properly handle quoted strings.
-				$output[ $key ] = sanitize_text_field( $options[ $key ] );
+				if( $key === 'lightgallery_extra_options' || $key === 'lightslider_extra_options' ) {
+					// Keep HTML in this field
+					$output[ $key ] = stripslashes( wp_filter_post_kses( wp_slash( $options[ $key ] ) ) );
+				} else {
+					// Strip all HTML and PHP tags and properly handle quoted strings.
+					$output[ $key ] = sanitize_text_field( $options[ $key ] );
+				}
 			}
 		}
 
@@ -344,7 +349,7 @@ class lgng_Admin {
 		?>
 	
 		<textarea class="code widefat" name='lgng_settings[lightgallery_extra_options]'>
-			<?php echo esc_html( $option ); ?>
+			<?php echo esc_textarea( $option ); ?>
 		</textarea>
 		<?php
 
@@ -389,7 +394,7 @@ class lgng_Admin {
 		?>
 	
 		<textarea class="code widefat" name='lgng_settings[lightslider_extra_options]'>
-			<?php echo esc_html( $option ); ?>
+			<?php echo esc_textarea( $option ); ?>
 		</textarea>
 		<?php
 
