@@ -2,7 +2,6 @@
 	margin: 0;
 }
 
-
 // Allow gallery items to go edge to edge.
 // conflicts with some themes' full/wide align method
 // .gutenberg .wp-block-lgng-gallery:not(.components-placeholder) {
@@ -17,13 +16,25 @@
 // }
 
 .wp-block-lgng-gallery figure {
-	margin: 0 0 38px 0;
+	margin: 0 0 15px 0;
+	padding-left: 7.5px;
+	padding-right: 7.5px;
 	outline: none;
 }
 
 .lg-blocks-gallery-item {
-
-	.editor-block-list__layout .editor-block-list__block[data-align="full"] > .editor-block-list__block-edit figure.is-thumb {
+	figure:not(.is-thumb) {
+		width: 100%;
+	}
+	figure {
+		> img {
+			width: 100%;
+		}
+	}
+	.editor-block-list__layout
+		.editor-block-list__block[data-align='full']
+		> .editor-block-list__block-edit
+		figure.is-thumb {
 		// uhh
 	}
 	.lg-blocks-gallery-container {
@@ -33,21 +44,18 @@
 	.is-selected {
 		outline: 2px solid #dadada;
 		outline-offset: -2px;
-	 	> img {
-			width: 100%;
-			height: auto;
-		 }
-		 .editor-rich-text {
-		 }
+
+		.editor-rich-text {
+		}
 	}
-	
+
 	&.is-transient img {
 		// @include loading_fade;
 	}
 	.is-thumb img {
 		// width: 150px;
-    // height: 150px;
-    // object-fit: cover;
+		// height: 150px;
+		// object-fit: cover;
 	}
 	.editor-rich-text {
 		overflow: visible;
@@ -57,7 +65,7 @@
 		// overflow-y: auto;
 	}
 
-	.editor-rich-text figcaption:not([data-is-placeholder-visible="true"]) {
+	.editor-rich-text figcaption:not([data-is-placeholder-visible='true']) {
 		position: relative;
 		font-size: 13px;
 		// overflow: hidden;
@@ -84,10 +92,10 @@
 	// 	width: 100%;
 	// 	height: 100%;
 	// }
-.lg-blocks-edit-gallery{
+	.lg-blocks-edit-gallery {
 		padding: 1em;
-		background-color: #dadada;
-}
+		background-color: #f3f3f4;
+	}
 	.components-button.core-blocks-gallery-add-item-button {
 		display: flex;
 		flex-direction: column;
@@ -103,7 +111,7 @@
 
 		&:hover,
 		&:focus {
-			border:1px solid grey;
+			border: 1px solid grey;
 		}
 	}
 }
@@ -115,19 +123,18 @@
 	right: 0;
 	background-color: theme(primary);
 	display: inline-flex;
-	z-index: z-index(".core-blocks-gallery-item__inline-menu");
+	z-index: z-index('.core-blocks-gallery-item__inline-menu');
 
 	.components-button {
 		width: 26px;
-    height: 26px;
-    justify-content: center;
+		height: 26px;
+		justify-content: center;
 		color: white;
 		background: rgba(0, 0, 0, 0.45);
 		&:hover,
 		&:focus {
 			color: white;
-					background: rgba(0, 0, 0, 0.85);
-
+			background: rgba(0, 0, 0, 0.85);
 		}
 	}
 }
