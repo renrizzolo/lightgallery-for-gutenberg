@@ -43,7 +43,14 @@ const {
 	Toolbar,
 	withNotices,
 } = wp.components;
-const { BlockControls, MediaUpload, MediaPlaceholder, InspectorControls, mediaUpload } = wp.editor;
+const {
+	BlockControls,
+	MediaUpload,
+	MediaPlaceholder,
+	InspectorControls,
+	InspectorAdvancedControls,
+	mediaUpload,
+} = wp.editor;
 
 /**
  * Internal dependencies
@@ -384,21 +391,22 @@ class GalleryEdit extends Component {
 							onChange={ this.setLgMode }
 							options={ lgModeOptions }
 						/>
-
-						<TextareaControl
-							label={ __( 'Lightslider additional options' ) }
-							value={ lightSliderOptions }
-							help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
-							onChange={ this.setLightSliderOptions }
-						/>
-						<TextareaControl
-							label={ __( 'Lightgallery additional options' ) }
-							value={ lightGalleryOptions }
-							help="Enter comma separated key/value pairs (in quotes) sachinchoolur.github.io/lightGallery/docs/api.html"
-							onChange={ this.setLightGalleryOptions }
-						/>
 					</PanelBody>
 				</InspectorControls>
+				<InspectorAdvancedControls>
+					<TextareaControl
+						label={ __( 'Lightslider additional options' ) }
+						value={ lightSliderOptions }
+						help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
+						onChange={ this.setLightSliderOptions }
+					/>
+					<TextareaControl
+						label={ __( 'Lightgallery additional options' ) }
+						value={ lightGalleryOptions }
+						help="Enter comma separated key/value pairs (in quotes) sachinchoolur.github.io/lightGallery/docs/api.html"
+						onChange={ this.setLightGalleryOptions }
+					/>
+				</InspectorAdvancedControls>
 				{ noticeUI }
 				<div className={ `lg-blocks-gallery-item ${ className } align${ align } ` }>
 					{ dropZone }
