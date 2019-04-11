@@ -18,10 +18,8 @@ class lgng_Admin {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'lgng_add_admin_menu' ) );
 			add_action( 'admin_init', array( $this, 'lgng_settings_init' ) );
-
 		}
 	}
-
 
 	/**
 	 * Returns the array of default options.
