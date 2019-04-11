@@ -31,12 +31,6 @@
 			width: 100%;
 		}
 	}
-	.editor-block-list__layout
-		.editor-block-list__block[data-align='full']
-		> .editor-block-list__block-edit
-		figure.is-thumb {
-		// uhh
-	}
 	.lg-blocks-gallery-container {
 		display: flex;
 		flex-wrap: wrap;
@@ -44,7 +38,6 @@
 	.is-selected {
 		outline: 2px solid #dadada;
 		outline-offset: -2px;
-
 		.editor-rich-text {
 		}
 	}
