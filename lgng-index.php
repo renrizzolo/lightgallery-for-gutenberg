@@ -159,6 +159,10 @@ class Lgng_Init {
 						'type' => 'boolean',
 						'default' =>  true,
 					),
+					'lightSliderAddClass' => array(
+						'type' => 'string',
+						'default' =>  $this->get_option('lightslider_add_class'),
+					),
 					'lightSliderOptions' => array(
 						'type' => 'string',
 						'default' =>  $this->get_option('lightslider_extra_options'),
@@ -353,7 +357,6 @@ class Lgng_Init {
 		if ( $atts['lightslider'] ) {
 		// lol this was annoying to write
 		$lghtml .= '$(".lightgallery#lgng-block-' . self::$blockId . '").lightSlider({';
-		$lghtml .= '"addClass": "align' . $atts['align'] . '",';
 		$lghtml .= '"item": 1,';
 		$lghtml .= '"loop": true,';
 		$lghtml .= '"slideMargin": 0,';
@@ -365,6 +368,7 @@ class Lgng_Init {
 		} else {
 			$lghtml .= '"gallery": true,';
 		}
+		$lghtml .= '"addClass": "align' . $atts['align'] . ' ' . $atts['lightSliderAddClass'] . '",';
 		$lghtml .= $atts['lightSliderOptions'];
 		$lghtml .= '});';
 			if ($atts['lightgallery']) {
