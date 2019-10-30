@@ -39,6 +39,8 @@ class lgng_Admin {
 			'image_size'									=> 'full',
 			'lightslider_extra_options'		=> '',
 			'lightgallery_extra_options'	=> '',
+			'lightslider_add_class'			=> '',
+
 		);
 	}
 
@@ -183,6 +185,13 @@ class lgng_Admin {
 			'lightslider_extra_options',
 			__( 'extra options object to apply as default to lightslider', 'lgng' ),
 			array( $this, 'lgng_text_field_lightslider_extra_options_render' ),
+			'pluginPage',
+			'lgng_ls_section'
+		);
+		add_settings_field(
+			'lightslider_add_class',
+			__( 'extra options object to apply as default to lightslider', 'lgng' ),
+			array( $this, 'lgng_text_field_lightslider_add_class_render' ),
 			'pluginPage',
 			'lgng_ls_section'
 		);
@@ -397,7 +406,14 @@ class lgng_Admin {
 		<?php
 
 	}
+	public function lgng_text_field_lightslider_add_class_render() {
 
+		$option = $this->get_option( 'lightslider_add_class' );
+		?>
+		<input class="widefat" type='text' name='lgng_settings[lightslider_add_class]' value='<?php echo esc_html( $option ); ?>'>
+		<?php
+
+	}
 // styles section
 
 	public function lgng_text_container_class_render() {

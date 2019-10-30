@@ -40,6 +40,7 @@ const {
 	SelectControl,
 	ToggleControl,
 	TextareaControl,
+	TextControl,
 	Toolbar,
 	withNotices,
 } = wp.components;
@@ -114,91 +115,95 @@ export function defaultColumnsNumber( attributes ) {
 
 class GalleryEdit extends Component {
 	constructor() {
-		super( ...arguments );
+		super(...arguments);
 
-		this.onSelectImage = this.onSelectImage.bind( this );
-		this.onSelectImages = this.onSelectImages.bind( this );
-		this.setLinkTo = this.setLinkTo.bind( this );
-		this.setLgMode = this.setLgMode.bind( this );
-		this.setLsMode = this.setLsMode.bind( this );
+		this.onSelectImage = this.onSelectImage.bind(this);
+		this.onSelectImages = this.onSelectImages.bind(this);
+		this.setLinkTo = this.setLinkTo.bind(this);
+		this.setLgMode = this.setLgMode.bind(this);
+		this.setLsMode = this.setLsMode.bind(this);
 
-		this.setColumnsNumber = this.setColumnsNumber.bind( this );
-		this.toggleLightslider = this.toggleLightslider.bind( this );
-		this.toggleLightgallery = this.toggleLightgallery.bind( this );
+		this.setColumnsNumber = this.setColumnsNumber.bind(this);
+		this.toggleLightslider = this.toggleLightslider.bind(this);
+		this.toggleLightgallery = this.toggleLightgallery.bind(this);
 
-		this.onRemoveImage = this.onRemoveImage.bind( this );
-		this.setImageAttributes = this.setImageAttributes.bind( this );
-		this.addFiles = this.addFiles.bind( this );
-		this.uploadFromFiles = this.uploadFromFiles.bind( this );
-		this.setLightSliderOptions = this.setLightSliderOptions.bind( this );
-		this.setLightGalleryOptions = this.setLightGalleryOptions.bind( this );
+		this.onRemoveImage = this.onRemoveImage.bind(this);
+		this.setImageAttributes = this.setImageAttributes.bind(this);
+		this.addFiles = this.addFiles.bind(this);
+		this.uploadFromFiles = this.uploadFromFiles.bind(this);
+		this.setLightSliderAddClass = this.setLightSliderAddClass.bind(this);
+		this.setLightSliderOptions = this.setLightSliderOptions.bind(this);
+		this.setLightGalleryOptions = this.setLightGalleryOptions.bind(this);
 
 		this.state = {
 			selectedImage: null,
 		};
 	}
 
-	onSelectImage( index ) {
+	onSelectImage(index) {
 		return () => {
-			if ( this.state.selectedImage !== index ) {
-				this.setState( {
+			if (this.state.selectedImage !== index) {
+				this.setState({
 					selectedImage: index,
-				} );
+				});
 			}
 		};
 	}
 
-	onRemoveImage( index ) {
+	onRemoveImage(index) {
 		return () => {
-			const images = filter( JSON.parse( this.props.attributes.images ), ( img, i ) => index !== i );
+			const images = filter(JSON.parse(this.props.attributes.images), (img, i) => index !== i);
 			const { columns } = this.props.attributes;
-			this.setState( { selectedImage: null } );
-			this.props.setAttributes( {
-				images: JSON.stringify( images ),
-				columns: columns ? Math.min( images.length, columns ) : columns,
-			} );
+			this.setState({ selectedImage: null });
+			this.props.setAttributes({
+				images: JSON.stringify(images),
+				columns: columns ? Math.min(images.length, columns) : columns,
+			});
 		};
 	}
 
-	onSelectImages( images ) {
-		console.log( 'onsel', images );
+	onSelectImages(images) {
+		console.log('onsel', images);
 		// const existingImages = JSON.parse(this.props.attributes.images);
 		const newImages = [
 			// ...existingImages,
-			...images.map( ( image ) => {
-				if ( Array.isArray( image.caption ) ) {
-					console.log( 'isarr', image.caption );
-					image.caption = image.caption[ 0 ];
+			...images.map((image) => {
+				if (Array.isArray(image.caption)) {
+					console.log('isarr', image.caption);
+					image.caption = image.caption[0];
 				}
-				console.log( 'image', image );
-				return pick( image, [ 'alt', 'caption', 'id', 'link', 'url', 'sizes.thumbnail' ] );
-			} ),
+				console.log('image', image);
+				return pick(image, ['alt', 'caption', 'id', 'link', 'url', 'sizes.thumbnail']);
+			}),
 		];
-		console.log( newImages );
+		console.log(newImages);
 
-		this.props.setAttributes( {
-			images: JSON.stringify( newImages ),
-		} );
+		this.props.setAttributes({
+			images: JSON.stringify(newImages),
+		});
 	}
 
-	setLinkTo( value ) {
-		this.props.setAttributes( { linkTo: value } );
+	setLinkTo(value) {
+		this.props.setAttributes({ linkTo: value });
 	}
-	setLgMode( value ) {
-		this.props.setAttributes( { lg_mode: value } );
+	setLgMode(value) {
+		this.props.setAttributes({ lg_mode: value });
 	}
-	setLsMode( value ) {
-		this.props.setAttributes( { ls_mode: value } );
+	setLsMode(value) {
+		this.props.setAttributes({ ls_mode: value });
 	}
-	setLightSliderOptions( value ) {
-		this.props.setAttributes( { lightSliderOptions: value } );
+	setLightSliderOptions(value) {
+		this.props.setAttributes({ lightSliderOptions: value });
 	}
-	setLightGalleryOptions( value ) {
-		this.props.setAttributes( { lightGalleryOptions: value } );
+	setLightGalleryOptions(value) {
+		this.props.setAttributes({ lightGalleryOptions: value });
 	}
-	setColumnsNumber( value ) {
-		if ( value !== 1 ) {
-			this.props.setAttributes( { columns: value } );
+	setLightSliderAddClass(value) {
+		this.props.setAttributes({ lightSliderAddClass: value });
+	}
+	setColumnsNumber(value) {
+		if (value !== 1) {
+			this.props.setAttributes({ columns: value });
 		}
 	}
 
@@ -207,82 +212,82 @@ class GalleryEdit extends Component {
 			attributes: { columns, lightslider, lightgallery },
 		} = this.props;
 		const max_cols = lightslider ? MAX_COLUMNS : MAX_THUMBS;
-		this.props.setAttributes( {
-			lightslider: ! lightslider,
+		this.props.setAttributes({
+			lightslider: !lightslider,
 			lightgallery: true,
 			columns: columns > max_cols ? max_cols : columns,
-		} );
+		});
 	}
 	toggleLightgallery() {
 		const {
 			attributes: { lightslider, lightgallery },
 		} = this.props;
 		// can't disable gallery if slider isn't enabled
-		if ( ! lightslider ) {
+		if (!lightslider) {
 			return;
 		}
 
-		this.props.setAttributes( {
-			lightgallery: ! lightgallery,
-		} );
+		this.props.setAttributes({
+			lightgallery: !lightgallery,
+		});
 	}
-	getLightgalleryHelp( checked ) {
-		return checked ?
-			__( 'Slider can be expanded to a fullscreen gallery.' ) :
-			__( 'fullscreen gallery disabled.' );
-	}
-
-	getLightsliderHelp( checked ) {
-		return checked ? __( 'Images are shown in a slider.' ) : __( 'Images are shown in a grid.' );
+	getLightgalleryHelp(checked) {
+		return checked
+			? __('Slider can be expanded to a fullscreen gallery.')
+			: __('fullscreen gallery disabled.');
 	}
 
-	setImageAttributes( index, attributes ) {
+	getLightsliderHelp(checked) {
+		return checked ? __('Images are shown in a slider.') : __('Images are shown in a grid.');
+	}
+
+	setImageAttributes(index, attributes) {
 		const {
 			attributes: { images },
 			setAttributes,
 		} = this.props;
-		const parsedImages = typeof images === 'string' ? JSON.parse( images ) : images;
-		if ( ! parsedImages[ index ] ) {
+		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
+		if (!parsedImages[index]) {
 			return;
 		}
-		setAttributes( {
-			images: JSON.stringify( [
-				...parsedImages.slice( 0, index ),
+		setAttributes({
+			images: JSON.stringify([
+				...parsedImages.slice(0, index),
 				{
-					...parsedImages[ index ],
+					...parsedImages[index],
 					...attributes,
 				},
-				...parsedImages.slice( index + 1 ),
-			] ),
-		} );
+				...parsedImages.slice(index + 1),
+			]),
+		});
 	}
 
-	uploadFromFiles( event ) {
-		this.addFiles( event.target.files );
+	uploadFromFiles(event) {
+		this.addFiles(event.target.files);
 	}
 
-	addFiles( files ) {
-		const currentImages = JSON.parse( this.props.attributes.images ) || [];
+	addFiles(files) {
+		const currentImages = JSON.parse(this.props.attributes.images) || [];
 		const { noticeOperations, setAttributes } = this.props;
-		mediaUpload( {
+		mediaUpload({
 			allowedType: 'image',
 			filesList: files,
-			onFileChange: ( images ) => {
-				setAttributes( {
-					images: JSON.stringify( currentImages.concat( images ) ),
-				} );
+			onFileChange: (images) => {
+				setAttributes({
+					images: JSON.stringify(currentImages.concat(images)),
+				});
 			},
 			onError: noticeOperations.createErrorNotice,
-		} );
+		});
 	}
 
-	componentDidUpdate( prevProps ) {
+	componentDidUpdate(prevProps) {
 		// Deselect images when deselecting the block
-		if ( ! this.props.isSelected && prevProps.isSelected ) {
-			this.setState( {
+		if (!this.props.isSelected && prevProps.isSelected) {
+			this.setState({
 				selectedImage: null,
 				captionSelected: false,
-			} );
+			});
 		}
 	}
 
@@ -290,7 +295,7 @@ class GalleryEdit extends Component {
 		const { attributes, isSelected, className, noticeOperations, noticeUI } = this.props;
 		const {
 			images,
-			columns = defaultColumnsNumber( attributes ),
+			columns = defaultColumnsNumber(attributes),
 			align,
 			linkTo,
 			lightslider,
@@ -299,51 +304,52 @@ class GalleryEdit extends Component {
 			lg_mode,
 			lightSliderOptions,
 			lightGalleryOptions,
+			lightSliderAddClass
 		} = attributes;
-		console.log( images );
-		const dropZone = <DropZone onFilesDrop={ this.addFiles } />;
-		const parsedImages = typeof images === 'string' ? JSON.parse( images ) : images;
+		console.log(images);
+		const dropZone = <DropZone onFilesDrop={this.addFiles} />;
+		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
 		const controls = (
 			<BlockControls>
-				{ !! parsedImages.length && (
+				{!!parsedImages.length && (
 					<Toolbar>
 						<MediaUpload
-							onSelect={ this.onSelectImages }
+							onSelect={this.onSelectImages}
 							type="image"
 							multiple
 							gallery
-							value={ parsedImages.map( ( img ) => img.id ) }
-							render={ ( { open } ) => (
+							value={parsedImages.map((img) => img.id)}
+							render={({ open }) => (
 								<IconButton
 									className="components-toolbar__control"
-									label={ __( 'Edit Gallery' ) }
+									label={__('Edit Gallery')}
 									icon="edit"
-									onClick={ open }
+									onClick={open}
 								/>
-							) }
+							)}
 						/>
 					</Toolbar>
-				) }
+				)}
 			</BlockControls>
 		);
 
-		if ( parsedImages.length === 0 ) {
+		if (parsedImages.length === 0) {
 			return (
 				<Fragment>
-					{ controls }
+					{controls}
 					<MediaPlaceholder
 						icon="format-gallery"
-						className={ className }
-						labels={ {
-							title: __( 'Gallery' ),
-							name: __( 'images' ),
-						} }
-						onSelect={ this.onSelectImages }
+						className={className}
+						labels={{
+							title: __('Gallery'),
+							name: __('images'),
+						}}
+						onSelect={this.onSelectImages}
 						accept="image/*"
 						type="image"
 						multiple
-						notices={ noticeUI }
-						onError={ noticeOperations.createErrorNotice }
+						notices={noticeUI}
+						onError={noticeOperations.createErrorNotice}
 					/>
 				</Fragment>
 			);
@@ -351,105 +357,111 @@ class GalleryEdit extends Component {
 
 		return (
 			<Fragment>
-				{ controls }
+				{controls}
 				<InspectorControls>
-					<PanelBody title={ __( 'Gallery Settings' ) }>
+					<PanelBody title={__('Gallery Settings')}>
 						<ToggleControl
-							label={ __( 'Show in lightslider' ) }
-							checked={ !! lightslider }
-							onChange={ this.toggleLightslider }
-							help={ this.getLightsliderHelp }
+							label={__('Show in lightslider')}
+							checked={!!lightslider}
+							onChange={this.toggleLightslider}
+							help={this.getLightsliderHelp}
 						/>
-						{ lightslider && (
+						{lightslider && (
 							<ToggleControl
-								label={ __( 'Enable lightgallery' ) }
-								checked={ !! lightgallery }
-								onChange={ this.toggleLightgallery }
-								help={ this.getLightgalleryHelp }
+								label={__('Enable lightgallery')}
+								checked={!!lightgallery}
+								onChange={this.toggleLightgallery}
+								help={this.getLightgalleryHelp}
 							/>
-						) }
-						{ parsedImages.length > 1 && (
+						)}
+						{parsedImages.length > 1 && (
 							<RangeControl
-								label={ __(
+								label={__(
 									lightslider ? 'amount of thumbs to show under lightslider' : 'grid columns'
-								) }
-								value={ columns }
-								onChange={ this.setColumnsNumber }
-								min={ lightslider ? 0 : 1 }
-								max={ lightslider ? MAX_THUMBS : MAX_COLUMNS }
+								)}
+								value={columns}
+								onChange={this.setColumnsNumber}
+								min={lightslider ? 0 : 1}
+								max={lightslider ? MAX_THUMBS : MAX_COLUMNS}
 							/>
-						) }
+						)}
 						<SelectControl
-							label={ __( 'Slider slide mode' ) }
-							value={ ls_mode }
-							onChange={ this.setLsMode }
-							options={ lsModeOptions }
+							label={__('Slider slide mode')}
+							value={ls_mode}
+							onChange={this.setLsMode}
+							options={lsModeOptions}
 						/>
 						<SelectControl
-							label={ __( 'Gallery slide mode' ) }
-							value={ lg_mode }
-							onChange={ this.setLgMode }
-							options={ lgModeOptions }
+							label={__('Gallery slide mode')}
+							value={lg_mode}
+							onChange={this.setLgMode}
+							options={lgModeOptions}
 						/>
 					</PanelBody>
 				</InspectorControls>
 				<InspectorAdvancedControls>
-					<TextareaControl
-						label={ __( 'Lightslider additional options' ) }
-						value={ lightSliderOptions }
-						help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
-						onChange={ this.setLightSliderOptions }
+					<TextControl
+						label="Lightslider container class"
+						value={lightSliderAddClass}
+						onChange={this.setLightSliderAddClass}
+						help="use this instead of addClass in additional options (so gutenberg wide alignment works)"
 					/>
 					<TextareaControl
-						label={ __( 'Lightgallery additional options' ) }
-						value={ lightGalleryOptions }
+						label={__('Lightslider additional options')}
+						value={lightSliderOptions}
+						help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
+						onChange={this.setLightSliderOptions}
+					/>
+					<TextareaControl
+						label={__('Lightgallery additional options')}
+						value={lightGalleryOptions}
 						help="Enter comma separated key/value pairs (in quotes) sachinchoolur.github.io/lightGallery/docs/api.html"
-						onChange={ this.setLightGalleryOptions }
+						onChange={this.setLightGalleryOptions}
 					/>
 				</InspectorAdvancedControls>
-				{ noticeUI }
-				<div className={ `lg-blocks-gallery-item ${ className } align${ align } ` }>
-					{ dropZone }
+				{noticeUI}
+				<div className={`lg-blocks-gallery-item ${className} align${align} `}>
+					{dropZone}
 					<div className="lg-blocks-gallery-container">
-						{ parsedImages.map( ( img, index ) => {
+						{parsedImages.map((img, index) => {
 							const hide = columns === 0 && index > 0;
-							return ! hide ? (
+							return !hide ? (
 								<GalleryImage
-									key={ img.id || img.url }
-									url={ index > 0 || ! lightslider ? img.sizes && img.sizes.thumbnail.url : img.url }
-									alt={ img.alt }
-									id={ img.id }
-									classes={ ( index > 0 || ! lightslider ) && `lgng-${ columns }-cols is-thumb` }
-									isSelected={ isSelected && this.state.selectedImage === index }
-									onRemove={ this.onRemoveImage( index ) }
-									onSelect={ this.onSelectImage( index ) }
-									setAttributes={ ( attrs ) => this.setImageAttributes( index, attrs ) }
-									caption={ img.caption }
+									key={img.id || img.url}
+									url={index > 0 || !lightslider ? img.sizes && img.sizes.thumbnail.url : img.url}
+									alt={img.alt}
+									id={img.id}
+									classes={(index > 0 || !lightslider) && `lgng-${columns}-cols is-thumb`}
+									isSelected={isSelected && this.state.selectedImage === index}
+									onRemove={this.onRemoveImage(index)}
+									onSelect={this.onSelectImage(index)}
+									setAttributes={(attrs) => this.setImageAttributes(index, attrs)}
+									caption={img.caption}
 								/>
 							) : null;
-						} ) }
+						})}
 					</div>
-					{ isSelected && (
+					{isSelected && (
 						<div>
 							<MediaUpload
-								onSelect={ this.onSelectImages }
+								onSelect={this.onSelectImages}
 								type="image"
 								multiple
 								gallery
-								value={ parsedImages.map( ( img ) => img.id ) }
-								render={ ( { open } ) => (
+								value={parsedImages.map((img) => img.id)}
+								render={({ open }) => (
 									<div className="lg-blocks-edit-gallery">
 										<Button
 											className="components-button is-button is-default is-large"
-											onClick={ open }
+											onClick={open}
 										>
-											{ __( 'Edit Gallery' ) }
+											{__('Edit Gallery')}
 										</Button>
 									</div>
-								) }
+								)}
 							/>
 						</div>
-					) }
+					)}
 				</div>
 			</Fragment>
 		);
