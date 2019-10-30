@@ -190,7 +190,7 @@ class lgng_Admin {
 		);
 		add_settings_field(
 			'lightslider_add_class',
-			__( 'extra options object to apply as default to lightslider', 'lgng' ),
+			__( 'extra css class to apply to lightslider main container', 'lgng' ),
 			array( $this, 'lgng_text_field_lightslider_add_class_render' ),
 			'pluginPage',
 			'lgng_ls_section'
