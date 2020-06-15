@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { filter, pick } from 'lodash';
+import { filter, pick } from "lodash";
 
 /**
  * WordPress dependencies
@@ -56,61 +56,64 @@ const {
 /**
  * Internal dependencies
  */
-import './editor.scss';
-import GalleryImage from './gallery-image';
+import "./editor.scss";
+import GalleryImage from "./gallery-image";
 
 const MAX_THUMBS = 12;
 const MAX_COLUMNS = 6;
 
 const linkOptions = [
-	{ value: 'attachment', label: __( 'Attachment Page' ) },
-	{ value: 'media', label: __( 'Media File' ) },
-	{ value: 'none', label: __( 'None' ) },
+	{ value: "attachment", label: __("Attachment Page") },
+	{ value: "media", label: __("Media File") },
+	{ value: "none", label: __("None") },
 ];
 
 const lgModeOptions = [
-	{ value: 'lg-slide', label: __( 'Slide' ) },
-	{ value: 'lg-fade', label: __( 'Fade' ) },
-	{ value: 'lg-zoom-in', label: __( 'Zoom In' ) },
-	{ value: 'lg-zoom-in-big', label: __( 'Zoom In Big' ) },
-	{ value: 'lg-zoom-out', label: __( 'Zoom Out' ) },
-	{ value: 'lg-zoom-out-big', label: __( 'Zoom Out Big' ) },
-	{ value: 'lg-zoom-out-in', label: __( 'Zoom Out In' ) },
-	{ value: 'lg-zoom-in-out', label: __( 'Zoom In Out' ) },
-	{ value: 'lg-soft-zoom', label: __( 'Soft Zoom' ) },
-	{ value: 'lg-scale-up', label: __( 'Scale Up' ) },
-	{ value: 'lg-slide-circular', label: __( 'Slide Circular' ) },
-	{ value: 'lg-slide-circular-vertical', label: __( 'Slide Circular Vertical' ) },
-	{ value: 'lg-slide-vertical', label: __( 'Slide Vertical' ) },
-	{ value: 'lg-slide-vertical-growth', label: __( 'Slide Vertical Growth' ) },
-	{ value: 'lg-slide-skew-only', label: __( 'Slide Skew Only' ) },
-	{ value: 'lg-slide-skew-only-rev', label: __( 'Slide Skew Only Reverse' ) },
-	{ value: 'lg-slide-skew-only-y', label: __( 'Slide Skew Only Y' ) },
-	{ value: 'lg-slide-skew-only-y-rev', label: __( 'Slide Skew Only Y Reverse' ) },
-	{ value: 'lg-slide-skew', label: __( 'Slide Skew' ) },
-	{ value: 'lg-slide-skew-rev', label: __( 'Slide Skew Reverse' ) },
-	{ value: 'lg-slide-skew-cross', label: __( 'Slide Skew Cross' ) },
-	{ value: 'lg-slide-skew-cross-rev', label: __( 'Slide Skew Cross Reverse' ) },
-	{ value: 'lg-slide-skew-ver', label: __( 'Slide Skew Vertical' ) },
-	{ value: 'lg-slide-skew-ver-rev', label: __( 'Slide Skew Vertical Reverse' ) },
-	{ value: 'lg-slide-skew-ver-cross', label: __( 'Slide Skew Vertical Cross' ) },
-	{ value: 'lg-slide-skew-ver-cross-rev', label: __( 'Slide Skew Vertical Cross Reverse' ) },
-	{ value: 'lg-lollipop', label: __( 'Lollipop' ) },
-	{ value: 'lg-lollipop-rev', label: __( 'Lollipop Reverse' ) },
-	{ value: 'lg-rotate', label: __( 'Rotate' ) },
-	{ value: 'lg-rotate-rev', label: __( 'Rotate Reverse' ) },
-	{ value: 'lg-tube', label: __( 'Tube' ) },
+	{ value: "lg-slide", label: __("Slide") },
+	{ value: "lg-fade", label: __("Fade") },
+	{ value: "lg-zoom-in", label: __("Zoom In") },
+	{ value: "lg-zoom-in-big", label: __("Zoom In Big") },
+	{ value: "lg-zoom-out", label: __("Zoom Out") },
+	{ value: "lg-zoom-out-big", label: __("Zoom Out Big") },
+	{ value: "lg-zoom-out-in", label: __("Zoom Out In") },
+	{ value: "lg-zoom-in-out", label: __("Zoom In Out") },
+	{ value: "lg-soft-zoom", label: __("Soft Zoom") },
+	{ value: "lg-scale-up", label: __("Scale Up") },
+	{ value: "lg-slide-circular", label: __("Slide Circular") },
+	{ value: "lg-slide-circular-vertical", label: __("Slide Circular Vertical") },
+	{ value: "lg-slide-vertical", label: __("Slide Vertical") },
+	{ value: "lg-slide-vertical-growth", label: __("Slide Vertical Growth") },
+	{ value: "lg-slide-skew-only", label: __("Slide Skew Only") },
+	{ value: "lg-slide-skew-only-rev", label: __("Slide Skew Only Reverse") },
+	{ value: "lg-slide-skew-only-y", label: __("Slide Skew Only Y") },
+	{ value: "lg-slide-skew-only-y-rev", label: __("Slide Skew Only Y Reverse") },
+	{ value: "lg-slide-skew", label: __("Slide Skew") },
+	{ value: "lg-slide-skew-rev", label: __("Slide Skew Reverse") },
+	{ value: "lg-slide-skew-cross", label: __("Slide Skew Cross") },
+	{ value: "lg-slide-skew-cross-rev", label: __("Slide Skew Cross Reverse") },
+	{ value: "lg-slide-skew-ver", label: __("Slide Skew Vertical") },
+	{ value: "lg-slide-skew-ver-rev", label: __("Slide Skew Vertical Reverse") },
+	{ value: "lg-slide-skew-ver-cross", label: __("Slide Skew Vertical Cross") },
+	{
+		value: "lg-slide-skew-ver-cross-rev",
+		label: __("Slide Skew Vertical Cross Reverse"),
+	},
+	{ value: "lg-lollipop", label: __("Lollipop") },
+	{ value: "lg-lollipop-rev", label: __("Lollipop Reverse") },
+	{ value: "lg-rotate", label: __("Rotate") },
+	{ value: "lg-rotate-rev", label: __("Rotate Reverse") },
+	{ value: "lg-tube", label: __("Tube") },
 ];
 const lsModeOptions = [
-	{ value: 'slide', label: __( 'Slide' ) },
+	{ value: "slide", label: __("Slide") },
 	// lightslider fade is a bit broken ??
 	// {
 	// 	/* { value: 'fade', label: __( 'Fade' ) }, */
 	// },
 ];
 
-export function defaultColumnsNumber( attributes ) {
-	return Math.min( 3, JSON.parse( attributes.images ).length );
+export function defaultColumnsNumber(attributes) {
+	return Math.min(3, JSON.parse(attributes.images).length);
 }
 
 class GalleryEdit extends Component {
@@ -152,7 +155,10 @@ class GalleryEdit extends Component {
 
 	onRemoveImage(index) {
 		return () => {
-			const images = filter(JSON.parse(this.props.attributes.images), (img, i) => index !== i);
+			const images = filter(
+				JSON.parse(this.props.attributes.images),
+				(img, i) => index !== i
+			);
 			const { columns } = this.props.attributes;
 			this.setState({ selectedImage: null });
 			this.props.setAttributes({
@@ -163,17 +169,24 @@ class GalleryEdit extends Component {
 	}
 
 	onSelectImages(images) {
-		console.log('onsel', images);
+		console.log("onsel", images);
 		// const existingImages = JSON.parse(this.props.attributes.images);
 		const newImages = [
 			// ...existingImages,
 			...images.map((image) => {
 				if (Array.isArray(image.caption)) {
-					console.log('isarr', image.caption);
+					console.log("isarr", image.caption);
 					image.caption = image.caption[0];
 				}
-				console.log('image', image);
-				return pick(image, ['alt', 'caption', 'id', 'link', 'url', 'sizes.thumbnail']);
+				console.log("image", image);
+				return pick(image, [
+					"alt",
+					"caption",
+					"id",
+					"link",
+					"url",
+					"sizes.thumbnail",
+				]);
 			}),
 		];
 		console.log(newImages);
@@ -233,12 +246,14 @@ class GalleryEdit extends Component {
 	}
 	getLightgalleryHelp(checked) {
 		return checked
-			? __('Slider can be expanded to a fullscreen gallery.')
-			: __('fullscreen gallery disabled.');
+			? __("Slider can be expanded to a fullscreen gallery.")
+			: __("fullscreen gallery disabled.");
 	}
 
 	getLightsliderHelp(checked) {
-		return checked ? __('Images are shown in a slider.') : __('Images are shown in a grid.');
+		return checked
+			? __("Images are shown in a slider.")
+			: __("Images are shown in a grid.");
 	}
 
 	setImageAttributes(index, attributes) {
@@ -246,7 +261,8 @@ class GalleryEdit extends Component {
 			attributes: { images },
 			setAttributes,
 		} = this.props;
-		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
+		const parsedImages =
+			typeof images === "string" ? JSON.parse(images) : images;
 		if (!parsedImages[index]) {
 			return;
 		}
@@ -270,7 +286,7 @@ class GalleryEdit extends Component {
 		const currentImages = JSON.parse(this.props.attributes.images) || [];
 		const { noticeOperations, setAttributes } = this.props;
 		mediaUpload({
-			allowedType: 'image',
+			allowedType: "image",
 			filesList: files,
 			onFileChange: (images) => {
 				setAttributes({
@@ -292,7 +308,13 @@ class GalleryEdit extends Component {
 	}
 
 	render() {
-		const { attributes, isSelected, className, noticeOperations, noticeUI } = this.props;
+		const {
+			attributes,
+			isSelected,
+			className,
+			noticeOperations,
+			noticeUI,
+		} = this.props;
 		const {
 			images,
 			columns = defaultColumnsNumber(attributes),
@@ -304,11 +326,12 @@ class GalleryEdit extends Component {
 			lg_mode,
 			lightSliderOptions,
 			lightGalleryOptions,
-			lightSliderAddClass
+			lightSliderAddClass,
 		} = attributes;
 		console.log(images);
 		const dropZone = <DropZone onFilesDrop={this.addFiles} />;
-		const parsedImages = typeof images === 'string' ? JSON.parse(images) : images;
+		const parsedImages =
+			typeof images === "string" ? JSON.parse(images) : images;
 		const controls = (
 			<BlockControls>
 				{!!parsedImages.length && (
@@ -322,7 +345,7 @@ class GalleryEdit extends Component {
 							render={({ open }) => (
 								<IconButton
 									className="components-toolbar__control"
-									label={__('Edit Gallery')}
+									label={__("Edit Gallery")}
 									icon="edit"
 									onClick={open}
 								/>
@@ -341,8 +364,8 @@ class GalleryEdit extends Component {
 						icon="format-gallery"
 						className={className}
 						labels={{
-							title: __('Gallery'),
-							name: __('images'),
+							title: __("Gallery"),
+							name: __("images"),
 						}}
 						onSelect={this.onSelectImages}
 						accept="image/*"
@@ -359,16 +382,16 @@ class GalleryEdit extends Component {
 			<Fragment>
 				{controls}
 				<InspectorControls>
-					<PanelBody title={__('Gallery Settings')}>
+					<PanelBody title={__("Gallery Settings")}>
 						<ToggleControl
-							label={__('Show in lightslider')}
+							label={__("Show in lightslider")}
 							checked={!!lightslider}
 							onChange={this.toggleLightslider}
 							help={this.getLightsliderHelp}
 						/>
 						{lightslider && (
 							<ToggleControl
-								label={__('Enable lightgallery')}
+								label={__("Enable lightgallery")}
 								checked={!!lightgallery}
 								onChange={this.toggleLightgallery}
 								help={this.getLightgalleryHelp}
@@ -377,7 +400,9 @@ class GalleryEdit extends Component {
 						{parsedImages.length > 1 && (
 							<RangeControl
 								label={__(
-									lightslider ? 'amount of thumbs to show under lightslider' : 'grid columns'
+									lightslider
+										? "amount of thumbs to show under lightslider"
+										: "grid columns"
 								)}
 								value={columns}
 								onChange={this.setColumnsNumber}
@@ -386,13 +411,13 @@ class GalleryEdit extends Component {
 							/>
 						)}
 						<SelectControl
-							label={__('Slider slide mode')}
+							label={__("Slider slide mode")}
 							value={ls_mode}
 							onChange={this.setLsMode}
 							options={lsModeOptions}
 						/>
 						<SelectControl
-							label={__('Gallery slide mode')}
+							label={__("Gallery slide mode")}
 							value={lg_mode}
 							onChange={this.setLgMode}
 							options={lgModeOptions}
@@ -407,13 +432,13 @@ class GalleryEdit extends Component {
 						help="use this instead of addClass in additional options (so gutenberg wide alignment works)"
 					/>
 					<TextareaControl
-						label={__('Lightslider additional options')}
+						label={__("Lightslider additional options")}
 						value={lightSliderOptions}
 						help="Enter comma separated key/value pairs (in quotes) e.g 'hideBarsDelay': 10000 sachinchoolur.github.io/lightslider/settings.html"
 						onChange={this.setLightSliderOptions}
 					/>
 					<TextareaControl
-						label={__('Lightgallery additional options')}
+						label={__("Lightgallery additional options")}
 						value={lightGalleryOptions}
 						help="Enter comma separated key/value pairs (in quotes) sachinchoolur.github.io/lightGallery/docs/api.html"
 						onChange={this.setLightGalleryOptions}
@@ -425,17 +450,30 @@ class GalleryEdit extends Component {
 					<div className="lg-blocks-gallery-container">
 						{parsedImages.map((img, index) => {
 							const hide = columns === 0 && index > 0;
+							console.log("img:", img);
+
 							return !hide ? (
 								<GalleryImage
 									key={img.id || img.url}
-									url={index > 0 || !lightslider ? img.sizes && img.sizes.thumbnail.url : img.url}
+									url={
+										index > 0 || !lightslider
+											? img.sizes
+												? img.sizes.thumbnail.url
+												: img.url
+											: img.url
+									}
 									alt={img.alt}
 									id={img.id}
-									classes={(index > 0 || !lightslider) && `lgng-${columns}-cols is-thumb`}
+									classes={
+										(index > 0 || !lightslider) &&
+										`lgng-${columns}-cols is-thumb`
+									}
 									isSelected={isSelected && this.state.selectedImage === index}
 									onRemove={this.onRemoveImage(index)}
 									onSelect={this.onSelectImage(index)}
-									setAttributes={(attrs) => this.setImageAttributes(index, attrs)}
+									setAttributes={(attrs) =>
+										this.setImageAttributes(index, attrs)
+									}
 									caption={img.caption}
 								/>
 							) : null;
@@ -455,7 +493,7 @@ class GalleryEdit extends Component {
 											className="components-button is-button is-default is-large"
 											onClick={open}
 										>
-											{__('Edit Gallery')}
+											{__("Edit Gallery")}
 										</Button>
 									</div>
 								)}
@@ -468,4 +506,4 @@ class GalleryEdit extends Component {
 	}
 }
 
-export default withNotices( GalleryEdit );
+export default withNotices(GalleryEdit);
